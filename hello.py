@@ -13,6 +13,9 @@ api = overpy.Overpass()
 def Home():
     return json.dumps({"restaurants": "/restaurants/"}, sort_keys = True, indent = 4)
 
+@app.route("/test")
+def Test():
+    return json.dumps({"test": "test"}, sort_keys = True, indent = 4)
 
 @app.route("/restaurants")
 def Restaurants():

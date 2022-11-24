@@ -20,3 +20,4 @@ jobs:
                   printf "%s\n" "$deploy_key" > ${HOME}/.ssh/id_ed25519
                   chmod 600 ${HOME}/.ssh/id_ed25519
                   rsync -a ./ github@watshy.fr:/home/github/Restaurants
+                  ssh github.watshy.fr sudo systemctl restart restaurants
