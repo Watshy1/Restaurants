@@ -5,19 +5,28 @@ on:
     push:
         branches: [master]
 
+env:
+    deploy_key: ${{secrets.deploy_key}}
+    known_hosts: ${{secrets.known_hosts}}
+
 jobs:
-    build:
+    rsync:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v3
-            - name: Deploy
-              env:
-                  deploy_key: ${{secrets.deploy_key}}
-                  known_hosts: ${{secrets.known_hosts}}
+            - name: Rsync
               run: |
-                  mkdir -p ${HOME}/.ssh
-                  printf "%s\n" "$known_hosts" > ${HOME}/.ssh/known_hosts
-                  printf "%s\n" "$deploy_key" > ${HOME}/.ssh/id_ed25519
-                  chmod 600 ${HOME}/.ssh/id_ed25519
-                  rsync -a ./ github@watshy.fr:/home/github/Restaurants
-                  ssh github.watshy.fr sudo systemctl restart restaurants
+                mkdir -p ${HOME}/.ssh
+                printf "%s\n" "$known_hosts" > ${HOME}/.ssh/known_hosts
+                printf "%s\n" "$deploy_key" > ${HOME}/.ssh/id_ed25519
+                chmod 600 ${HOME}/.ssh/id_ed25519
+                rsync -a ./ github@watshy.fr:/home/github/Restaurants
+    restart:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: appleboy/ssh-action@master
+              with:
+                host: watshy.fr
+                username: github
+                key: ${{ secrets.deploy_key }}
+                script: sudo systemctl restart restaurants
