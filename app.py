@@ -26,20 +26,25 @@ def Restaurants():
 
     lat = request.args.get('lat')
     lon = request.args.get('lon')
-    floatLat = float(lat)
-    floatLon = float(lon)
-    n = str(floatLat).split(".")[-1]
-    a = str(floatLon).split(".")[-1]
+
     test = 0
     test2 = 0
 
-    for i in n:
-        test += 1
-    
-    for z in a:
-        test2 += 1
+    if (lat):
+        floatLat = float(lat)
+        n = str(floatLat).split(".")[-1]
 
-    city = 'Tignes'
+        for i in n:
+            test += 1
+
+    if (lon):
+        floatLon = float(lon)
+        a = str(floatLon).split(".")[-1]
+
+        for z in a:
+            test2 += 1
+
+    city = 'Paris'
 
     if (restaurantName):
 
